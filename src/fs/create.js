@@ -6,8 +6,9 @@ const path = 'files/fresh.txt';
 
 const create = async () => {
   fs.access(path, fs.constants.F_OK, (err) => {
-    if(err) {
-      fsPromises.writeFile(path, text)
+    if (err) {
+      fsPromises
+        .writeFile(path, text)
         .then(() => console.log('The file was created!'))
         .catch((err) => {
           console.error(err);
@@ -15,7 +16,7 @@ const create = async () => {
     } else {
       throw new Error('FS operation failed');
     }
-  })
+  });
 };
 
 await create();
