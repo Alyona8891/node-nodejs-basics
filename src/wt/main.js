@@ -12,24 +12,25 @@ const performCalculations = async () => {
   const cores = defineCPUCores();
   const workersArr = [];
 
-
   for (let i = 1; i <= cores; i += 1) {
-    workersArr.push(new Worker('./src/wt/worker.js', { workerData: i + INCREMENT }));
+    workersArr.push(
+      new Worker('./src/wt/worker.js', { workerData: i + INCREMENT })
+    );
   }
 
   Promise.allSettled(
     workersArr.map((worker) => {
       return new Promise((res, rej) => {
         worker.on('message', (message) => {
-            res({ status: 'resolved', data: message });
+          res({ status: 'resolved', data: message });
         });
         worker.on('error', () => {
-            rej({ status: 'error', data: null });
+          rej({ status: 'error', data: null });
         });
       });
     })
   ).then((results) => {
-    console.log(results.map(result => result.value));
+    console.log(results.map((result) => result.value));
   });
 };
 
